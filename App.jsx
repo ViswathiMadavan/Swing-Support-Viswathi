@@ -1049,6 +1049,7 @@ function ResponsePanel() {
   const [notes, setNotes] = useState('');
   const [channel, setChannel] = useState('email');
   const [result, setResult] = useState('');
+  const [resultChannel, setResultChannel] = useState('email');
   const [loading, setLoading] = useState(false);
 
   function loadSample(idx) {
@@ -1085,6 +1086,7 @@ function ResponsePanel() {
     const prompt = `Channel: ${channel.toUpperCase()}\n\nTicket from user:\n"${ticket}"\n\nAgent's investigation notes (use these as the source of truth — do not invent additional facts):\n${notes}\n\nDraft a ${channel} response following Swing Education's voice guidelines.`;
     const resp = await callClaude(SYSTEM_PROMPTS.response, prompt);
     setResult(resp);
+    setResultChannel(channel);
     scrollToResult();
     setLoading(false);
   }
@@ -1244,7 +1246,7 @@ function ResponsePanel() {
         </Card>
       )}
       {result && (
-        <Card title={`Drafted Response (${channel})`}>
+        <Card title={`Drafted Response (${resultChannel})`}>
           <pre
             style={{
               color: colors.text,
