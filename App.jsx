@@ -692,6 +692,16 @@ function tryParseJSON(str) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════
+// AUTO-SCROLL HELPER — gently scrolls down to reveal results
+// after a workflow runs, so users don't miss new output below.
+// ═══════════════════════════════════════════════════════════════
+function scrollToResult() {
+  setTimeout(() => {
+    window.scrollBy({ top: 350, behavior: 'smooth' });
+  }, 150);
+}
+
 // ─── COMPONENTS ───
 function TabButton({ label, icon, active, onClick }) {
   return (
@@ -810,6 +820,7 @@ function TriagePanel() {
     const resp = await callClaude(SYSTEM_PROMPTS.triage, input);
     setRaw(resp);
     setResult(tryParseJSON(resp));
+    scrollToResult();
     setLoading(false);
   }
 
@@ -1074,6 +1085,7 @@ function ResponsePanel() {
     const prompt = `Channel: ${channel.toUpperCase()}\n\nTicket from user:\n"${ticket}"\n\nAgent's investigation notes (use these as the source of truth — do not invent additional facts):\n${notes}\n\nDraft a ${channel} response following Swing Education's voice guidelines.`;
     const resp = await callClaude(SYSTEM_PROMPTS.response, prompt);
     setResult(resp);
+    scrollToResult();
     setLoading(false);
   }
 
@@ -1265,6 +1277,7 @@ function SentimentPanel() {
     const resp = await callClaude(SYSTEM_PROMPTS.sentiment, input);
     setRaw(resp);
     setResult(tryParseJSON(resp));
+    scrollToResult();
     setLoading(false);
   }
 
@@ -1525,6 +1538,7 @@ function KnowledgePanel() {
     setResult('');
     const resp = await callClaude(SYSTEM_PROMPTS.knowledge, query);
     setResult(resp);
+    scrollToResult();
     setLoading(false);
   }
 
@@ -1634,6 +1648,7 @@ function ReportPanel() {
       `Generate a weekly support report narrative from these metrics:\n\n${metrics}`
     );
     setResult(resp);
+    scrollToResult();
     setLoading(false);
   }
 
@@ -1735,6 +1750,7 @@ Maria: No, that's everything. Thank you!`;
     const resp = await callClaude(SYSTEM_PROMPTS.summarize, input);
     setRaw(resp);
     setResult(tryParseJSON(resp));
+    scrollToResult();
     setLoading(false);
   }
 
